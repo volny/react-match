@@ -1,10 +1,10 @@
-import path from 'path'
+import { resolve } from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 export default {
   entry: './app/index.js',
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: resolve(__dirname, 'build'),
     filename: 'bundle.js'
   },
   module: {
