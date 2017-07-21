@@ -25,7 +25,7 @@ SelectedLanguage.propTypes = {
 
 const RepoGrid = (props) => (
   <ul className='popular-list'>
-    {props.repos.map((repo, index) => {
+    {props.repos.map((repo, index) => (
       <li key={repo.name} className='popular-item'>
         <div className="popular-rank">#{index + 1}</div>
         <ul className="space-list-items">
@@ -41,7 +41,7 @@ const RepoGrid = (props) => (
           <li>{repo.stargazers_count} stars</li>
         </ul>
       </li>
-    })}
+    ))}
   </ul>
 )
 
@@ -78,7 +78,11 @@ export default class Popular extends Component {
           selectedLanguage={this.state.selectedLanguage}
         />
 
-        <RepoGrid repos={this.state.repos} />
+        {!this.state.repos
+          ? <p>Loading</p>
+          : <RepoGrid repos={this.state.repos} />
+        }
+
 
     </div>
     )
