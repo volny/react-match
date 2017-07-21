@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-//import ReactRouter, { BrowserRouter as Router, Route } from 'react-router-dom'
-const ReactRouter = require('react-router-dom')
-const Router = ReactRouter.BrowserRouter
-const Route = ReactRouter.Route
+// aufgemerkt: importing BrowserRouter like this is buggy
+//https://github.com/ReactTraining/react-router/issues/5114
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import Home from './Home';
 import Popular from './Popular';
@@ -15,9 +14,12 @@ export default class App extends Component {
       <Router>
         <div className="container">
           <Nav />
-          <Route exact path="/" component={Home} />
-          <Route path="/battle" component={Battle}></Route>
-          <Route path="/popular" component={Popular} />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/battle" component={Battle}></Route>
+              <Route path="/popular" component={Popular} />
+              <Route render={() => <p>Not Found</p>} />
+            </Switch>
         </div>
       </Router>
     )
