@@ -16,7 +16,11 @@ export default class Popular extends Component {
     return (
       <ul className="languages">
         {languages.map((lang) => {
-          return <li onClick={this.updateLanguage.bind(null, lang)} key={lang}>{lang}</li>
+          return <li
+            onClick={this.updateLanguage.bind(null, lang)}
+            style={lang === this.state.selectedLanguage ? { color: '#d0021b'} : null}
+            key={lang}
+            >{lang}</li>
         })}
       </ul>
     )
