@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import api from '../utils/api'
+
 const SelectedLanguage = (props) => {
   const languages = ['All', 'Javascript', 'Ruby', 'Java', 'CSS', 'Python']
   return (
@@ -24,6 +26,13 @@ SelectedLanguage.propTypes = {
 export default class Popular extends Component {
   state = {
     selectedLanguage: 'All'
+  }
+
+  componentDidMount = () => {
+    api.fetchPopularRepos(this.state.selectedLanguage)
+      .then((repos) => {
+        console.log(repos)
+      })
   }
 
   updateLanguage = (lang) => {
