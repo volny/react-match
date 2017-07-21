@@ -9,7 +9,7 @@ const SelectedLanguage = (props) => {
     <ul className="languages">
       {languages.map((lang) => {
         return <li
-          onClick={props.onSelect.bind(null, lang)}
+          onClick={lang === props.selectedLanguage ? null : props.onSelect.bind(null, lang)}
           style={lang === props.selectedLanguage ? { color: '#d0021b'} : null}
           key={lang}
           >{lang}</li>
@@ -29,16 +29,20 @@ export default class Popular extends Component {
   }
 
   componentDidMount = () => {
-    api.fetchPopularRepos(this.state.selectedLanguage)
-      .then((repos) => {
-        console.log(repos)
-      })
+    this.updateLanguage(this.state.selectedLanguage)
   }
 
   updateLanguage = (lang) => {
     this.setState({
-      selectedLanguage: lang
+      selectedLanguage: lang,
+      repos: null
     })
+
+    api.fetchPopularRepos(lang)
+      .then((repos) => {
+        this.setState({ repos })
+      })
+
   }
 
   render() {
