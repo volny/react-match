@@ -7,6 +7,7 @@ import Home from './Home';
 import Popular from './Popular';
 import Battle from './Battle';
 import Nav from './Nav';
+import Results from './Results';
 
 export default class App extends Component {
   render() {
@@ -17,6 +18,7 @@ export default class App extends Component {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/battle" component={Battle}></Route>
+              <Route path="/battle/results" component={Results}></Route>
               <Route path="/popular" component={Popular} />
               <Route render={() => <p>Not Found</p>} />
             </Switch>

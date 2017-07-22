@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+
 
 const PlayerPreview = (props) => (
   <div>
@@ -139,6 +141,17 @@ export default class Battle extends Component {
               id="playerTwo" />
           }
         </div>
+
+        {playerOneImage && playerTwoImage &&
+          <Link
+            className="button"
+            to={{
+              pathname: `${this.props.match.url}/results`,
+              search: `?playerOneName=${playerOneName}&playerTwoName=${playerTwoName}`
+            }}
+            > Battle </Link>
+        }
+
       </div>
     )
   }
