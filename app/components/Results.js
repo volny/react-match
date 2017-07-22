@@ -1,7 +1,21 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import { battle } from '../utils/api'
 import { Link } from 'react-router-dom'
+
+const Player = (props) => (
+  <div>
+    <h1 className="header">{props.label}</h1>
+    <h3 style={{textAlign: 'center'}}>Score: {props.score}</h3>
+  </div>
+)
+
+Player.propTypes = {
+  label: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  profile: PropTypes.object.isRequired,
+}
 
 export default class Results extends Component {
   state = {
@@ -48,7 +62,18 @@ export default class Results extends Component {
       )
     }
     return (
-      <div>{JSON.stringify(this.state, null, 2)}</div>
+      <div>
+        <Player
+          label='Winner'
+          score={winner.score}
+          profile={winner.profile}
+        />
+        <Player
+          label='Loser'
+          score={loser.score}
+          profile={loser.profile}
+        />
+      </div>
     )
   }
 }

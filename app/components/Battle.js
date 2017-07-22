@@ -1,28 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-
-
-const PlayerPreview = (props) => (
-  <div>
-    <div className="column">
-      <img src={props.avatar} alt={`Avatar for ${props.username}`} className="avatar"/>
-      <h2 className="username">@{props.username}</h2>
-    </div>
-    <button
-      className="reset"
-      onClick={props.onReset.bind(null, props.id)}>
-        Reset
-      </button>
-  </div>
-)
-
-PlayerPreview.proptypes = {
-  avatar: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  onReset: PropTypes.func.isRequired,
-}
+import PlayerPreview from './PlayerPreview'
 
 class PlayerInput extends Component {
   state = {
@@ -106,39 +85,38 @@ export default class Battle extends Component {
     return (
       <div>
         <div className="row">
-          {/* Instead of the hack with `&&` why not test if a name has been submitted? */}
-          {/* {playerOneName.length > 0
-            ? <PlayerPreview />
-            : <PlayerInput />
-          } */}
-
           {/* shorthand if statement */}
           {!playerOneName && <PlayerInput
             id="playerOne"
             label="Player One"
             onSubmit={this.handleSubmit} />
           }
-
           {playerOneImage !== null &&
             <PlayerPreview
               avatar={playerOneImage}
-              username={playerOneName}
-              onReset={this.handleReset}
-              id="playerOne" />
+              username={playerOneName}>
+              <button
+                className="reset"
+                onClick={this.handleReset.bind(null, 'playerOne')}>
+                  Reset
+              </button>
+            </PlayerPreview>
           }
-
           {!playerTwoName && <PlayerInput
             id="playerTwo"
             label="Player Two"
             onSubmit={this.handleSubmit} />
           }
-
           {playerTwoImage !== null &&
             <PlayerPreview
               avatar={playerTwoImage}
-              username={playerTwoName}
-              onReset={this.handleReset}
-              id="playerTwo" />
+              username={playerTwoName}>
+              <button
+                className="reset"
+                onClick={this.handleReset.bind(null, 'playerTwo')}>
+                  Reset
+              </button>
+            </PlayerPreview>
           }
         </div>
 
