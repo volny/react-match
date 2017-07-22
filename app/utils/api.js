@@ -51,11 +51,16 @@ const sortPlayers = (players) => (
   players.sort((a,b) => b.score - a.score)
 )
 
+const handleError = (error) => {
+  console.warn(error)
+  return null
+}
+
 export const battle = (players) => {
   const array_of_promises = players.map(getUserData)
   return axios.all(array_of_promises)
     .then(sortPlayers)
-    .catch((error) => console.warn(error))
+    .catch(handleError)
 }
 
 export const fetchPopularRepos = (language) => {
