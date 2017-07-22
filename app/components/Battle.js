@@ -7,9 +7,10 @@ class PlayerInput extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({
-      username: event.target.value
-    })
+    const value = event.target.value
+    this.setState(() => ({
+      username: value
+    }))
   }
 
   handleSubmit = (event) => {

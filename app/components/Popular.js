@@ -59,14 +59,14 @@ export default class Popular extends Component {
   }
 
   updateLanguage = (lang) => {
-    this.setState({
+    this.setState(() => ({
       selectedLanguage: lang,
       repos: null
-    })
+    }))
 
     api.fetchPopularRepos(lang)
       .then((repos) => {
-        this.setState({ repos })
+        this.setState(() => ({ repos }))
       })
   }
 
