@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import api from '../utils/api'
+import { fetchPopularRepos } from '../utils/api'
 
 const SelectedLanguage = (props) => {
   const languages = ['All', 'Javascript', 'Ruby', 'Java', 'CSS', 'Python']
@@ -64,7 +64,7 @@ export default class Popular extends Component {
       repos: null
     }))
 
-    api.fetchPopularRepos(lang)
+    fetchPopularRepos(lang)
       .then((repos) => {
         this.setState(() => ({ repos }))
       })
