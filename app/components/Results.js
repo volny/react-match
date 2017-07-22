@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
 import { battle } from '../utils/api'
+import { Link } from 'react-router-dom'
 
 export default class Results extends Component {
   state = {
@@ -38,8 +39,16 @@ export default class Results extends Component {
     if (loading === true) {
       return <p>Loading</p>
     }
+    if (error) {
+      return (
+        <div>
+          <p>{error}</p>
+          <Link to='/battle'>Reset</Link>
+        </div>
+      )
+    }
     return (
-      <div></div>
+      <div>{JSON.stringify(this.state, null, 2)}</div>
     )
   }
 }
