@@ -11,10 +11,12 @@ const styles = {
 export default class Loading extends Component {
   static propTypes = {
     text: PropTypes.string.isRequired,
+    speed: PropTypes.number.isRequired,
   }
 
   static defaultProps = {
     text: 'Loading',
+    speed: 300
   }
 
   state = {
@@ -35,7 +37,7 @@ export default class Loading extends Component {
           text: prevState.text + '.'
         }))
       }
-    }, 300)
+    }, this.props.speed)
   }
 
   componentWillUnmount = () => {
