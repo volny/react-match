@@ -1,7 +1,8 @@
 import { resolve } from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import webpack from 'webpack'
 
-export default {
+const config = {
   entry: './app/index.js',
   output: {
     path: resolve(__dirname, 'build'),
@@ -23,3 +24,17 @@ export default {
     })
   ]
 }
+
+if (process.env.NODE_ENV === 'production') {
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      'process.env': {
+        // set the node env for the production code (npm script sets it for compilation only)
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin()
+  )
+}
+
+export default config
