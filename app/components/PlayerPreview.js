@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const PlayerPreview = (props) => (
+const PlayerPreview = ({ avatar, username, children }) => (
   <div>
     <div className="column">
-      <img src={props.avatar} alt={`Avatar for ${props.username}`} className="avatar"/>
-      <h2 className="username">@{props.username}</h2>
+      <img src={avatar} alt={`Avatar for ${username}`} className="avatar"/>
+      <h2 className="username">@{username}</h2>
     </div>
-    {props.children}
+    {children}
   </div>
 )
 

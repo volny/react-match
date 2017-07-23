@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
-export default (props) => (
+export default () => (
   <ul className="nav">
       <li>
         <NavLink exact activeClassName="active" to='/'>Home</NavLink>

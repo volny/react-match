@@ -7,8 +7,7 @@ import { battle } from '../utils/api'
 import PlayerPreview from './PlayerPreview'
 import Loading from './Loading'
 
-const Profile = (props) => {
-  const { info } = props
+const Profile = ({ info }) => {
   return (
     <PlayerPreview
       avatar={info.avatar_url}
@@ -30,11 +29,11 @@ Profile.propTypes = {
   info: PropTypes.object.isRequired,
 }
 
-const Player = (props) => (
+const Player = ({ label, score, profile }) => (
   <div>
-    <h1 className="header">{props.label}</h1>
-    <h3 style={{textAlign: 'center'}}>Score: {props.score}</h3>
-    <Profile info={props.profile}/>
+    <h1 className="header">{label}</h1>
+    <h3 style={{textAlign: 'center'}}>Score: {score}</h3>
+    <Profile info={profile}/>
   </div>
 )
 

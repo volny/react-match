@@ -4,14 +4,14 @@ import PropTypes from 'prop-types'
 import Loading from './Loading'
 import { fetchPopularRepos } from '../utils/api'
 
-const SelectedLanguage = (props) => {
+const SelectedLanguage = ({ selectedLanguage, onSelect }) => {
   const languages = ['All', 'Javascript', 'Ruby', 'Java', 'CSS', 'Python']
   return (
     <ul className="languages">
       {languages.map((lang) => {
         return <li
-          onClick={lang === props.selectedLanguage ? null : props.onSelect.bind(null, lang)}
-          style={lang === props.selectedLanguage ? { color: '#d0021b'} : null}
+          onClick={lang === selectedLanguage ? null : onSelect.bind(null, lang)}
+          style={lang === selectedLanguage ? { color: '#d0021b'} : null}
           key={lang}
           >{lang}</li>
       })}
@@ -24,9 +24,9 @@ SelectedLanguage.propTypes = {
   selectedLanguage: PropTypes.string.isRequired,
 }
 
-const RepoGrid = (props) => (
+const RepoGrid = ({ repos }) => (
   <ul className='popular-list'>
-    {props.repos.map((repo, index) => (
+    {repos.map((repo, index) => (
       <li key={repo.name} className='popular-item'>
         <div className="popular-rank">#{index + 1}</div>
         <ul className="space-list-items">
@@ -80,11 +80,9 @@ export default class Popular extends Component {
         />
 
         {!this.state.repos
-          ? <Loading />
+          ? <Loading speed={100}/>
           : <RepoGrid repos={this.state.repos} />
         }
-
-
     </div>
     )
   }
