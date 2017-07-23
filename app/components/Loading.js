@@ -8,17 +8,17 @@ const styles = {
   }
 }
 
-export default class  extends Component {
-  state = {
-    text: this.props.text
-  }
-
+export default class Loading extends Component {
   static propTypes = {
     text: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
     text: 'Loading',
+  }
+
+  state = {
+    text: this.props.text
   }
 
   render() {

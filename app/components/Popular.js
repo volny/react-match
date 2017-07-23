@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import Loading from './Loading'
 import { fetchPopularRepos } from '../utils/api'
 
 const SelectedLanguage = (props) => {
@@ -79,7 +80,7 @@ export default class Popular extends Component {
         />
 
         {!this.state.repos
-          ? <p>Loading</p>
+          ? <Loading text="Contacting Github"/>
           : <RepoGrid repos={this.state.repos} />
         }
 
