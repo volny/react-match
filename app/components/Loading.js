@@ -10,7 +10,15 @@ const styles = {
 
 export default class  extends Component {
   state = {
+    text: this.props.text
+  }
 
+  static propTypes = {
+    text: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    text: 'Loading',
   }
 
   render() {
