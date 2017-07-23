@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// aufgemerkt: importing BrowserRouter like this is buggy
+// aufgemerkt: `import BrowserRouter as Router` is buggy
 //https://github.com/ReactTraining/react-router/issues/5114
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 

@@ -1,23 +1,13 @@
-// TODO
-// GO INTO THE OLD REPO AND FIND THAT GENIUS WAY TYLER MADE THE URLS OUT OF
-// OBJECT PROPERTIES!
-
 import axios from 'axios'
 
-//const id = 'YOUR_CLIENT_ID'
-//const sec = 'YOUR_SECRET_ID'
-//const params = `?client_id=${id}&client_secret=${sec}`
-const params = ''
-
 const getProfile = (username) => {
-  const URI = `https://api.github.com/users/${encodeURIComponent(username)}${encodeURIComponent(params)}`
+  const URI = `https://api.github.com/users/${encodeURIComponent(username)}`
   return axios.get(URI)
     .then((user) => user.data)
 }
 
 const getRepos = (username) => {
-//  const URI = `https://api.github.com/users/${encodeURIComponent(username)}/repos${encodeURIComponent(params)}&per_page=100`
-  const URI = `https://api.github.com/users/${encodeURIComponent(username)}/repos${encodeURIComponent(params)}`
+  const URI = `https://api.github.com/users/${encodeURIComponent(username)}/repos`
   return axios.get(URI)
 }
 
