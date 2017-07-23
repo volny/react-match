@@ -10,20 +10,44 @@ const styles = {
 
 export default class Loading extends Component {
   static propTypes = {
-    text: PropTypes.string.isRequired,
-    speed: PropTypes.number.isRequired,
+    text: PropTypes.string,
+    speed: PropTypes.number,
+    animation: PropTypes.string,
   }
 
   static defaultProps = {
     text: 'Loading',
-    speed: 300
+    speed: 200,
+    animation: 'case',
   }
 
   state = {
-    text: this.props.text
+    text: this.props.text,
+    index: 0
   }
 
-  componentDidMount = () => {
+  animateCase = () => {
+    const stopper = this.props.text.length
+    this.interval = window.setInterval(() => {
+      if (this.state.index === stopper) {
+        this.setState(() => ({
+          index: 0
+        }))
+      } else {
+        const { index } = this.state
+        const { text } = this.props
+        const reversed = text.charCodeAt(index) >= 97
+          ? text.charAt(index).toUpperCase()
+          : text.charAt(index).toLowerCase()
+        this.setState((prevState) => ({
+          text: text.substr(0, index) + reversed + text.substr(index + 1),
+          index: prevState.index + 1
+        }))
+      }
+    }, this.props.speed)
+  }
+
+  animateDots = () => {
     const stopper = this.props.text + '...'
     this.interval = window.setInterval(() => {
       if (this.state.text === stopper) {
@@ -31,13 +55,19 @@ export default class Loading extends Component {
           text: this.props.text
         }))
       } else {
-        // one advantage of passing a func into setState is you can access the
-        //PREVIOUS STATE as the first argument
         this.setState((prevState) => ({
           text: prevState.text + '.'
         }))
       }
     }, this.props.speed)
+  }
+
+  componentDidMount = () => {
+    if (this.props.animation === 'case') {
+      this.animateCase()
+    } else if (this.props.animation === 'dots') {
+      this.animateDots()
+    }
   }
 
   componentWillUnmount = () => {

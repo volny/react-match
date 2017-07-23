@@ -80,7 +80,7 @@ export default class Popular extends Component {
         />
 
         {!this.state.repos
-          ? <Loading text="Contacting Github" speed={100} />
+          ? <Loading />
           : <RepoGrid repos={this.state.repos} />
         }
 
