@@ -51,11 +51,10 @@ export default class Results extends Component {
     loading: true,
   }
 
-  componentDidMount = () => {
-    const players = queryString.parse(this.props.location.search)
-    battle([
-      players.playerOneName, players.playerTwoName
-    ]).then((results) => {
+  componentDidMount = async () => {
+    try {
+      const players = queryString.parse(this.props.location.search)
+      const results = await battle([players.playerOneName, players.playerTwoName])
       if (results === null) {
         return this.setState(() => {
           const error = 'Looks like there was an error. Check that both users exist on Github'
@@ -71,7 +70,9 @@ export default class Results extends Component {
         loser: results[1],
         loading: false
       }))
-    })
+    } catch (error) {
+      console.warn({ error })
+    }
   }
 
   render() {
