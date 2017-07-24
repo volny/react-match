@@ -3,7 +3,10 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack from 'webpack'
 
 const config = {
-  entry: './app/index.js',
+  entry: [
+    'babel-polyfill',
+    './app/index.js'
+  ],
   output: {
     path: resolve(__dirname, 'build'),
     filename: 'bundle.js',
