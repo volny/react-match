@@ -52,8 +52,9 @@ export default class Results extends Component {
   }
 
   componentDidMount = async () => {
+    const players = queryString.parse(this.props.location.search)
+    
     try {
-      const players = queryString.parse(this.props.location.search)
       const results = await battle([players.playerOneName, players.playerTwoName])
       if (results === null) {
         return this.setState(() => {

@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-const getProfile = (username) => {
+const getProfile = async (username) => {
   const URI = `https://api.github.com/users/${encodeURIComponent(username)}`
-  return axios.get(URI)
-    .then((user) => user.data)
+  const user = await axios.get(URI)
+  return user.data
 }
 
 const getRepos = (username) => {
@@ -22,19 +22,18 @@ const calculateScore = (profile, repos) => {
   return followers * 3 + totalStars
 }
 
-const getUserData = (player) => {
-  const array_of_promises = [
-    getProfile(player),
-    getRepos(player)
-  ]
-  // when all promises resolved then ...
-  return axios.all(array_of_promises)
-    .then((data) => {
-      const profile = data[0]
-      const repos = data[1]
-      const score = calculateScore(profile, repos)
-      return { profile, score }
-    })
+const getUserData = async (player) => {
+  const array_of_promises = [getProfile(player), getRepos(player)]
+  try {
+    const data = await axios.all(array_of_promises)
+
+    const profile = data[0]
+    const repos = data[1]
+    const score = calculateScore(profile, repos)
+    return { profile, score }
+  } catch (error) {
+    handleError(error)
+  }
 }
 
 const sortPlayers = (players) => (
@@ -46,15 +45,22 @@ const handleError = (error) => {
   return null
 }
 
-export const battle = (players) => {
+export const battle = async (players) => {
   const array_of_promises = players.map(getUserData)
-  return axios.all(array_of_promises)
-    .then(sortPlayers)
-    .catch(handleError)
+  try {
+    const players = await axios.all(array_of_promises)
+    return sortPlayers(players)
+  } catch (error) {
+    handleError(error)
+  }
 }
 
-export const fetchPopularRepos = (language) => {
+export const fetchPopularRepos = async (language) => {
   const URI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`)
-  return axios.get(URI)
-    .then((response) => response.data.items)
+  try {
+    const response = await axios.get(URI)
+    return response.data.items
+  } catch (error) {
+    handleError(error)
+  }
 }
