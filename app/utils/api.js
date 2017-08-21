@@ -23,9 +23,9 @@ const calculateScore = (profile, repos) => {
 }
 
 const getUserData = async (player) => {
-  const array_of_promises = [getProfile(player), getRepos(player)]
+  const arrayOfPromises = [getProfile(player), getRepos(player)]
   try {
-    const data = await axios.all(array_of_promises)
+    const data = await axios.all(arrayOfPromises)
 
     const profile = data[0]
     const repos = data[1]
@@ -37,7 +37,7 @@ const getUserData = async (player) => {
 }
 
 const sortPlayers = (players) => (
-  players.sort((a,b) => b.score - a.score)
+  players.sort((a, b) => b.score - a.score)
 )
 
 const handleError = (error) => {
@@ -46,9 +46,9 @@ const handleError = (error) => {
 }
 
 export const battle = async (players) => {
-  const array_of_promises = players.map(getUserData)
+  const arrayOfPromises = players.map(getUserData)
   try {
-    const players = await axios.all(array_of_promises)
+    const players = await axios.all(arrayOfPromises)
     return sortPlayers(players)
   } catch (error) {
     handleError(error)
