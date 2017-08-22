@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "firebase:login": "firebase login",
+    "firebase:init:functions": "firebase init functions",
     "serve": "webpack-dev-server",
     "build": "NODE_ENV='production' webpack -p"
   },
@@ -24,6 +26,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "css-loader": "^0.28.5",
+    "firebase-tools": "^3.9.2",
     "html-webpack-plugin": "^2.30.1",
     "prop-types": "^15.5.10",
     "standard": "^10.0.3",
