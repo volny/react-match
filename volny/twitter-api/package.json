@@ -1,6 +1,6 @@
 {
   "name": "twitter-api",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "author": "volny <felix@volny.co>",
   "main": "functions/__main__.js",
@@ -10,7 +10,7 @@
     "build": "faaslang",
     "name": "volny/twitter-api",
     "timeout": 10000,
-    "publish": true,
+    "publish": false,
     "personalize": {
       "keys": [],
       "user": []

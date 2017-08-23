@@ -1,10 +1,11 @@
 /**
 * A basic Hello World function
-* @param {string} name Who you're saying hello to
+* @param {string} name
+* @param {number} age
 * @returns {string}
 */
-module.exports = (name = 'world', context, callback) => {
+module.exports = (name = 'world', age, context, callback) => {
 
-  callback(null, `hello ${name}`);
+  callback(null, `hello ${name}, ${age}`);
 
 };
