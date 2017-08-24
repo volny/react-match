@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "serve": "webpack-dev-server",
+    "lib": "lib",
+    "lib:init": "lib init",
+    "lib:create": "lib create",
     "build": "NODE_ENV='production' webpack -p"
   },
   "babel": {
@@ -25,6 +28,7 @@
     "babel-register": "^6.26.0",
     "css-loader": "^0.28.5",
     "html-webpack-plugin": "^2.30.1",
+    "lib.cli": "^3.1.1",
     "prop-types": "^15.5.10",
     "standard": "^10.0.3",
     "style-loader": "^0.18.2",
@@ -33,6 +37,8 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "codebird": "^2.6.0",
+    "q": "^1.5.0",
     "query-string": "^5.0.0",
     "react": "^16.0.0-beta.5",
     "react-dom": "^16.0.0-beta.5",
