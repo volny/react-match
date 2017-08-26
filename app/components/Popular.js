@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import Loading from './Loading'
-import { fetchPopularRepos } from '../utils/api'
+import { fetchPopularRepos, getFromTwitter } from '../utils/api'
 
 const SelectedLanguage = ({ selectedLanguage, onSelect }) => {
   const languages = ['All', 'Javascript', 'Ruby', 'Java', 'CSS', 'Python']
@@ -67,13 +67,17 @@ export default class Popular extends Component {
 
     try {
       const repos = await fetchPopularRepos(lang)
-      this.setState(() => ({ repos }))
+      const twitterMessage = await getFromTwitter()
+      this.setState(() => ({ repos, twitterMessage }))
     } catch (e) {
       console.log({ error })
     }
   }
 
   render() {
+    if (this.state.twitterMessage) {
+      console.log(`Here's our string from Twitter API: ${this.state.twitterMessage.data}`)
+    }
     return (
       <div>
         <SelectedLanguage
