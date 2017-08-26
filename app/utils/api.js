@@ -3,8 +3,8 @@ import axios from 'axios'
 const CLOUD_FUNCTION_URL = 'https://us-central1-twitter-scorecard-177703.cloudfunctions.net/printFollowersCount'
 
 // JUST intermediary - don't accept player name - player and making a string out of data happens on server for now
-export const getFromTwitter = async () => {
-  const string = await axios.get(CLOUD_FUNCTION_URL)
+export const getFromTwitter = async (username) => {
+  const string = await axios.get(`CLOUD_FUNCTION_URL?username=${username}`)
   return string
 }
 

@@ -10,7 +10,9 @@ exports.printFollowersCount = (req, res) => {
   // TODO replace this with production URL
   res.set('Access-Control-Allow-Origin', '*')
   res.set('Access-Control-Allow-Methods', 'GET')
-  getUserData('jack')
+  // TODO protect against malicious/wrong user input (e.g. ?user=ev&user=felix currently crashes to app)
+  // what should happen is that anything thats not <URL>?username=<string> should return proper JSON that says query is not valid
+  getUserData(req.query.username)
     .then((data) => {
       res.status(200).send(`${data.name} has ${data.followers_count} followers`)
     })
