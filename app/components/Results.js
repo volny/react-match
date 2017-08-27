@@ -5,7 +5,6 @@ import queryString from 'query-string'
 
 import { sortPlayers } from '../utils/api'
 import PlayerPreview from './PlayerPreview'
-//import Loading from './Loading'
 
 const Profile = ({ info }) => {
   return (
@@ -42,84 +41,19 @@ export default class Results extends Component {
   state = {
     winner: null,
     loser: null,
-    // error: null,
-    // loading: true,
   }
 
   componentWillMount = () => {
-    console.log('hi')
     const { playerOneData, playerTwoData } = this.props.location.state
     const [winner, loser] = sortPlayers([playerOneData, playerTwoData])
-
-    console.log('winner, lsoer', winner, loser)
-
     this.setState(() => ({
-      // error: null,
       winner,
       loser,
-      // loading: false
     }))
   }
 
-  componentDidMount = () => {
-    console.log('did mount')
-  }
-
-  //  componentDidMount = async () => {
-  //    console.log('com did m')
-  //    const { playerOneData, playerTwoData } = this.props.location.state
-  //    const [winner, loser] = sortPlayers([playerOneData, playerTwoData])
-  //
-  //    console.log('winner, lsoer', winner, loser)
-  //
-  //    this.setState(() => ({
-  //      // error: null,
-  //      winner,
-  //      loser,
-  //      // loading: false
-  //    }))
-  //
-  //
-  //    //const players = queryString.parse(this.props.location.search)
-  //
-  //    //try {
-  //    //  const results = await battle([players.playerOneName, players.playerTwoName])
-  //    //  if (results === null) {
-  //    //    return this.setState(() => {
-  //    //      const error = 'Looks like there was an error. Check that both users exist on Github'
-  //    //      return {
-  //    //        error,
-  //    //        loading: false
-  //    //      }
-  //    //    })
-  //    //  }
-  //    //  this.setState(() => ({
-  //    //    error: null,
-  //    //    winner: results[0],
-  //    //    loser: results[1],
-  //    //    loading: false
-  //    //  }))
-  //    //} catch (error) {
-  //    //  console.warn({ error })
-  //    //}
-  //  }
-
   render() {
-    console.log('state at render', this.state)
-    // const { error, winner, loser, loading } = this.state
     const { winner, loser } = this.state
-    // if (loading === true) {
-    //   return <Loading />
-    // }
-
-    // if (error) {
-    //   return (
-    //     <div>
-    //       <p>{error}</p>
-    //       <Link to='/battle'>Reset</Link>
-    //     </div>
-    //   )
-    // }
     return (
       <div className="row">
         <Player

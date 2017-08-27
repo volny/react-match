@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import PlayerPreview from './PlayerPreview'
+import Loading from './Loading'
 
 import { getFromTwitter } from '../utils/api'
 
@@ -23,6 +24,10 @@ class PlayerInput extends Component {
   }
 
   render() {
+    if (this.props.loading && this.state.username) {
+      return <Loading />
+    }
+
     return (
       <form className="column" onSubmit={this.handleSubmit}>
         <label htmlFor="username" className="header">
@@ -68,6 +73,10 @@ export default class Battle extends Component {
   }
 
   handleSubmit = async (id, username) => {
+    this.setState(() => ({
+      loading: true
+    }))
+
     try {
       const twitterData = await getFromTwitter(username)
       const newState = {}
@@ -107,8 +116,6 @@ export default class Battle extends Component {
     return (
       <div>
         <div className="row">
-                          <h2 style={{color: 'red'}}>hello</h2>
-
           {/* shorthand if statement */}
           {!playerOneData.name && <PlayerInput
             id="playerOne"
