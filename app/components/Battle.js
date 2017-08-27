@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import PlayerPreview from './PlayerPreview'
 
+import { getFromTwitter } from '../utils/api'
+
 class PlayerInput extends Component {
   state = {
     username: ''
@@ -34,7 +36,11 @@ class PlayerInput extends Component {
           value={this.state.username}
           onChange={this.handleChange}
         />
-        <button className="button" type="submit" disabled={!this.state.username}>
+        <button
+          className="button"
+          type="submit"
+          disabled={!this.state.username}
+        >
           Submit
         </button>
       </form>
@@ -54,13 +60,20 @@ export default class Battle extends Component {
     playerTwoName: '',
     playerOneImage: null,
     playerTwoImage: null,
+    playerOneData: null,
+    playerTwoData: null,
   }
 
-  handleSubmit = (id, username) => {
+  handleSubmit = async (id, username) => {
+    const twitterdata = await getFromTwitter(username)
+
     this.setState(() => {
       const newState = {}
-      newState[id + 'Name'] = username
-      newState[id + 'Image'] = `https://github.com/${username}.png?size=200`
+      //newState[id + 'Name'] = username
+      newState[id + 'Name'] = twitterdata.name
+      //newState[id + 'Image'] = `https://github.com/${username}.png?size=200`
+      newState[id + 'Image'] = twitterdata.image_url
+      newState[id + 'Data'] = twitterdata
       return newState
     })
   }
@@ -70,6 +83,7 @@ export default class Battle extends Component {
       const newState = {}
       newState[id + 'Name'] = ''
       newState[id + 'Image'] = null
+      newState[id + 'Data'] = null
       return newState
     })
   }
@@ -80,6 +94,8 @@ export default class Battle extends Component {
       playerTwoName,
       playerOneImage,
       playerTwoImage,
+      playerOneData,
+      playerTwoData,
     } = this.state
 
     return (
@@ -125,7 +141,12 @@ export default class Battle extends Component {
             className="button"
             to={{
               pathname: `${this.props.match.url}/results`,
-              search: `?playerOneName=${playerOneName}&playerTwoName=${playerTwoName}`
+              search: `?playerOneName=${playerOneName}&playerTwoName=${playerTwoName}`,
+              state: {
+                playerOneData,
+                playerTwoData
+              }
+
             }}
             > Battle </Link>
         }

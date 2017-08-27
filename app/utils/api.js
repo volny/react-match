@@ -4,8 +4,12 @@ import axios from 'axios'
 export const getFromTwitter = async (username) => {
   const CLOUD_FUNCTION_URL = 'https://us-central1-twitter-scorecard-177703.cloudfunctions.net/'
   const functionName = 'getTwitterScore'
-  const data = await axios.get(`${CLOUD_FUNCTION_URL}${functionName}?username=${username}`)
-  return data.data
+  try {
+    const data = await axios.get(`${CLOUD_FUNCTION_URL}${functionName}?username=${username}`)
+    return data.data
+  } catch (error) {
+    handleError(error)
+  }
 }
 
 //const getProfile = async (username) => {
@@ -44,7 +48,7 @@ export const getFromTwitter = async (username) => {
 //  }
 //}
 
-const sortPlayers = (players) => (
+export const sortPlayers = (players) => (
   players.sort((a, b) => b.score - a.score)
 )
 
@@ -53,15 +57,15 @@ const handleError = (error) => {
   return null
 }
 
-export const battle = async (players) => {
-  const arrayOfPromises = players.map(getFromTwitter)
-  try {
-    const players = await axios.all(arrayOfPromises)
-    return sortPlayers(players)
-  } catch (error) {
-    handleError(error)
-  }
-}
+//export const battle = async (players) => {
+//  const arrayOfPromises = players.map(getFromTwitter)
+//  try {
+//    const players = await axios.all(arrayOfPromises)
+//    return sortPlayers(players)
+//  } catch (error) {
+//    handleError(error)
+//  }
+//}
 
 //export const battle = async (players) => {
 //  const arrayOfPromises = players.map(getUserData)
