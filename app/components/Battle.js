@@ -56,12 +56,12 @@ PlayerInput.propTypes = {
 
 export default class Battle extends Component {
   state = {
-    playerOneName: '',
-    playerTwoName: '',
-    playerOneImage: null,
-    playerTwoImage: null,
-    playerOneData: null,
-    playerTwoData: null,
+    // playerOneName: '',
+    // playerTwoName: '',
+    // playerOneImage: null,
+    // playerTwoImage: null,
+    playerOneData: {},
+    playerTwoData: {},
   }
 
   handleSubmit = async (id, username) => {
@@ -70,9 +70,11 @@ export default class Battle extends Component {
     this.setState(() => {
       const newState = {}
       //newState[id + 'Name'] = username
-      newState[id + 'Name'] = twitterdata.name
       //newState[id + 'Image'] = `https://github.com/${username}.png?size=200`
-      newState[id + 'Image'] = twitterdata.image_url
+
+      // newState[id + 'Name'] = twitterdata.name
+      // newState[id + 'Image'] = twitterdata.image_url
+
       newState[id + 'Data'] = twitterdata
       return newState
     })
@@ -81,19 +83,19 @@ export default class Battle extends Component {
   handleReset = (id) => {
     this.setState(() => {
       const newState = {}
-      newState[id + 'Name'] = ''
-      newState[id + 'Image'] = null
-      newState[id + 'Data'] = null
+      // newState[id + 'Name'] = ''
+      // newState[id + 'Image'] = null
+      newState[id + 'Data'] = {}
       return newState
     })
   }
 
   render() {
     const {
-      playerOneName,
-      playerTwoName,
-      playerOneImage,
-      playerTwoImage,
+      // playerOneName,
+      // playerTwoName,
+      // playerOneImage,
+      // playerTwoImage,
       playerOneData,
       playerTwoData,
     } = this.state
@@ -102,15 +104,15 @@ export default class Battle extends Component {
       <div>
         <div className="row">
           {/* shorthand if statement */}
-          {!playerOneName && <PlayerInput
+          {!playerOneData.name && <PlayerInput
             id="playerOne"
             label="Player One"
             onSubmit={this.handleSubmit} />
           }
-          {playerOneImage !== null &&
+          {playerOneData.image_url !== undefined &&
             <PlayerPreview
-              avatar={playerOneImage}
-              username={playerOneName}>
+              avatar={playerOneData.image_url}
+              username={playerOneData.name}>
               <button
                 className="reset"
                 onClick={this.handleReset.bind(null, 'playerOne')}>
@@ -118,15 +120,15 @@ export default class Battle extends Component {
               </button>
             </PlayerPreview>
           }
-          {!playerTwoName && <PlayerInput
+          {!playerTwoData.name && <PlayerInput
             id="playerTwo"
             label="Player Two"
             onSubmit={this.handleSubmit} />
           }
-          {playerTwoImage !== null &&
+          {playerTwoData.image_url !== undefined &&
             <PlayerPreview
-              avatar={playerTwoImage}
-              username={playerTwoName}>
+              avatar={playerTwoData.image_url}
+              username={playerTwoData.name}>
               <button
                 className="reset"
                 onClick={this.handleReset.bind(null, 'playerTwo')}>
@@ -136,12 +138,12 @@ export default class Battle extends Component {
           }
         </div>
 
-        {playerOneImage && playerTwoImage &&
+        {playerOneData.image_url && playerTwoData.image_url &&
           <Link
             className="button"
             to={{
               pathname: `${this.props.match.url}/results`,
-              search: `?playerOneName=${playerOneName}&playerTwoName=${playerTwoName}`,
+              //search: `?playerOneName=${playerOneData.name}&playerTwoName=${playerTwoData.name}`,
               state: {
                 playerOneData,
                 playerTwoData
