@@ -10,16 +10,13 @@ import Loading from './Loading'
 const Profile = ({ info }) => {
   return (
     <PlayerPreview
-      avatar={info.avatar_url}
-      username={info.login}>
+
+      avatar={info.image_url}
+      username={info.name}>
+
       <ul className='space-list-items'>
         {info.name && <li>{info.name}</li>}
-        {info.location && <li>{info.location}</li>}
-        {info.company && <li>{info.company}</li>}
-        <li>Followers: {info.followers}</li>
-        <li>Following: {info.following}</li>
-        <li>Public Repos: {info.public_repos}</li>
-        {info.blog && <li><a href={info.blog}>{info.blog}</a></li>}
+        {info.description && <li>{info.description}</li>}
       </ul>
     </PlayerPreview>
   )
@@ -29,17 +26,16 @@ Profile.propTypes = {
   info: PropTypes.object.isRequired,
 }
 
-const Player = ({ label, score, profile }) => (
+const Player = ({ label, profile }) => (
   <div>
     <h1 className="header">{label}</h1>
-    <h3 style={{textAlign: 'center'}}>Score: {score}</h3>
+    <h3 style={{textAlign: 'center'}}>Score: {profile.score}</h3>
     <Profile info={profile}/>
   </div>
 )
 
 Player.propTypes = {
   label: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
   profile: PropTypes.object.isRequired,
 }
 
@@ -93,13 +89,11 @@ export default class Results extends Component {
       <div className="row">
         <Player
           label='Winner'
-          score={winner.score}
-          profile={winner.profile}
+          profile={winner}
         />
         <Player
           label='Loser'
-          score={loser.score}
-          profile={loser.profile}
+          profile={loser}
         />
       </div>
     )

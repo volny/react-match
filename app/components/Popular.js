@@ -13,9 +13,9 @@ const SelectedLanguage = ({ selectedLanguage, onSelect }) => {
           onClick={lang === selectedLanguage ? null : onSelect.bind(null, lang)}
           style={lang === selectedLanguage ? { color: '#d0021b'} : null}
           key={lang}
-          >{lang}</li>
-      })}
-    </ul>
+        >{lang}</li>
+    })}
+  </ul>
   )
 }
 
@@ -42,8 +42,8 @@ const RepoGrid = ({ repos }) => (
           <li>{repo.stargazers_count} stars</li>
         </ul>
       </li>
-    ))}
-  </ul>
+  ))}
+</ul>
 )
 
 RepoGrid.propTypes = {
@@ -67,17 +67,13 @@ export default class Popular extends Component {
 
     try {
       const repos = await fetchPopularRepos(lang)
-      const twitterMessage = await getFromTwitter()
-      this.setState(() => ({ repos, twitterMessage }))
+      this.setState(() => ({ repos }))
     } catch (e) {
       console.log({ error })
     }
   }
 
   render() {
-    if (this.state.twitterMessage) {
-      console.log(`Here's our string from Twitter API: ${this.state.twitterMessage.data}`)
-    }
     return (
       <div>
         <SelectedLanguage
@@ -85,11 +81,11 @@ export default class Popular extends Component {
           selectedLanguage={this.state.selectedLanguage}
         />
 
-        {!this.state.repos
+      {!this.state.repos
           ? <Loading speed={100}/>
           : <RepoGrid repos={this.state.repos} />
         }
-    </div>
+      </div>
     )
   }
 }

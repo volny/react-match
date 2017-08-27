@@ -10,15 +10,18 @@ const calculateScore = (data) => {
 
 module.exports = {
   getUserData: (player) => {
+    const formatImageUrl = (url) => {
+      const index = url.lastIndexOf('normal')
+      return url.substring(0, index) + '400x400.jpg'
+    }
     return twitter.get('users/show', {screen_name: player})
       .then(data => (
         {
           name: data.name,
           score: calculateScore(data),
           description: data.description,
-          // TODO replace the "normal" in the URL with "400x400"
-          image_url: data.profile_image_url_https
-        } 
+          image_url: formatImageUrl(data.profile_image_url_https)
+        }
       ))
       .catch(error => console.log(error))
   }
