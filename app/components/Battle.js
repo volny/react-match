@@ -36,6 +36,9 @@ class PlayerInput extends Component {
           value={this.state.username}
           onChange={this.handleChange}
         />
+        {this.props.error && this.state.username &&
+        <p style={{color: '#d0021b'}}>{this.props.error}</p>
+        }
         <button
           className="button"
           type="submit"
@@ -51,63 +54,69 @@ class PlayerInput extends Component {
 PlayerInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  error: PropTypes.string,
+  loading: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
 }
 
 export default class Battle extends Component {
   state = {
-    // playerOneName: '',
-    // playerTwoName: '',
-    // playerOneImage: null,
-    // playerTwoImage: null,
+    error: null,
+    loading: false,
     playerOneData: {},
     playerTwoData: {},
   }
 
   handleSubmit = async (id, username) => {
-    const twitterdata = await getFromTwitter(username)
-
-    this.setState(() => {
+    try {
+      const twitterData = await getFromTwitter(username)
       const newState = {}
-      //newState[id + 'Name'] = username
-      //newState[id + 'Image'] = `https://github.com/${username}.png?size=200`
+      let error
 
-      // newState[id + 'Name'] = twitterdata.name
-      // newState[id + 'Image'] = twitterdata.image_url
+      if (twitterData === '') {
+        error = 'Seems like the user doesn\'t exist or was suspended'
+      } else if (!twitterData) {
+        error = "😱 - no or wrong data returned from Twitter"
+      } else {
+        newState[id + 'Data'] = twitterData
+        error = null
+      }
 
-      newState[id + 'Data'] = twitterdata
-      return newState
-    })
+      this.setState(() => ({
+        ...newState,
+        loading: false,
+        error
+      }))
+
+    } catch (error) {
+      console.warn('Something went wrong with API call:\n', error)
+    }
   }
 
   handleReset = (id) => {
     this.setState(() => {
       const newState = {}
-      // newState[id + 'Name'] = ''
-      // newState[id + 'Image'] = null
       newState[id + 'Data'] = {}
       return newState
     })
   }
 
   render() {
-    const {
-      // playerOneName,
-      // playerTwoName,
-      // playerOneImage,
-      // playerTwoImage,
-      playerOneData,
-      playerTwoData,
-    } = this.state
+    const { playerOneData, playerTwoData, error, loading} = this.state
 
     return (
       <div>
         <div className="row">
+                          <h2 style={{color: 'red'}}>hello</h2>
+
           {/* shorthand if statement */}
           {!playerOneData.name && <PlayerInput
             id="playerOne"
             label="Player One"
-            onSubmit={this.handleSubmit} />
+            error={error}
+            loading={loading}
+            onSubmit={this.handleSubmit}
+          />
           }
           {playerOneData.image_url !== undefined &&
             <PlayerPreview
@@ -123,6 +132,8 @@ export default class Battle extends Component {
           {!playerTwoData.name && <PlayerInput
             id="playerTwo"
             label="Player Two"
+            error={error}
+            loading={loading}
             onSubmit={this.handleSubmit} />
           }
           {playerTwoData.image_url !== undefined &&
@@ -136,6 +147,7 @@ export default class Battle extends Component {
               </button>
             </PlayerPreview>
           }
+
         </div>
 
         {playerOneData.image_url && playerTwoData.image_url &&
@@ -143,7 +155,6 @@ export default class Battle extends Component {
             className="button"
             to={{
               pathname: `${this.props.match.url}/results`,
-              //search: `?playerOneName=${playerOneData.name}&playerTwoName=${playerTwoData.name}`,
               state: {
                 playerOneData,
                 playerTwoData
