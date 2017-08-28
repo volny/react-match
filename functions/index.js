@@ -15,3 +15,4 @@ exports.getTwitterScore = (req, res) => {
   getUserData(req.query.username)
     .then(data => res.status(200).send(data))
 }
+

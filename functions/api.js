@@ -1,19 +1,21 @@
-// TODO: save-dev twitter
 const Twitter = require('twitter')
-const secrets = require('./secrets').secrets
-
+const secrets = require('./secrets')
 const twitter = new Twitter(secrets)
 
 const calculateScore = (data) => {
-  return data.followers_count * 3 + data.statuses_count
+  const count = data.followers_count * 3 + data.statuses_count
+  return Math.floor(Math.sqrt(count))
 }
 
 module.exports = {
   getUserData: (player) => {
     const formatImageUrl = (url) => {
-      const index = url.lastIndexOf('normal')
-      return url.substring(0, index) + '400x400.jpg'
+      const toReplace = 'normal'
+      const replaceBy = '400x400'
+      const index = url.lastIndexOf(toReplace)
+      return url.substring(0, index) + replaceBy + url.substring(index + toReplace.length)
     }
+
     return twitter.get('users/show', {screen_name: player})
       .then(data => (
         {
