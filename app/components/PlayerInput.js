@@ -4,7 +4,8 @@ import Loading from './Loading'
 
 export default class PlayerInput extends Component {
   state = {
-    username: ''
+    username: '',
+    loading: false
   }
 
   handleChange = (event) => {
@@ -16,11 +17,20 @@ export default class PlayerInput extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
+    this.setState(() => ({
+      loading: true
+    }))
+
     this.props.onSubmit(this.props.id, this.state.username)
+      .then(() => {
+        this.setState(() => ({
+          loading: false
+        }))
+      })
   }
 
   render() {
-    if (this.props.loading && this.state.username) {
+    if (this.state.loading) {
       return <Loading />
     }
 
@@ -56,7 +66,6 @@ PlayerInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   error: PropTypes.string,
-  loading: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
 }
 

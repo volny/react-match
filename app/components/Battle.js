@@ -9,35 +9,30 @@ import { getFromTwitter } from '../utils/api'
 
 export default class Battle extends Component {
   state = {
-    error: null,
-    loading: false,
     playerOneData: {},
     playerTwoData: {},
+    playerOneError: null,
+    playerTwoError: null,
   }
 
   handleSubmit = async (id, username) => {
-    this.setState(() => ({
-      loading: true
-    }))
-
     try {
       const twitterData = await getFromTwitter(username)
       const newState = {}
-      let error
 
       if (twitterData === '') {
-        error = 'Seems like the user doesn\'t exist or was suspended'
+        newState[id + 'Error'] = 'Seems like the user doesn\'t exist or was suspended'
       } else if (!twitterData) {
-        error = "😱 - no or wrong data returned from Twitter"
+        newState[id + 'Error'] = "😱 - no or wrong data returned from Twitter"
+      } else if (twitterData.protected) {
+        newState[id + 'Error'] = "Sorry, we can't read this users tweets"
       } else {
         newState[id + 'Data'] = twitterData
-        error = null
+        newState[id + 'Error'] = null
       }
 
       this.setState(() => ({
-        ...newState,
-        loading: false,
-        error
+        ...newState
       }))
 
     } catch (error) {
@@ -54,7 +49,7 @@ export default class Battle extends Component {
   }
 
   render() {
-    const { playerOneData, playerTwoData, error, loading} = this.state
+    const { playerOneData, playerTwoData, playerOneError, playerTwoError} = this.state
 
     return (
       <div>
@@ -63,8 +58,7 @@ export default class Battle extends Component {
           {!playerOneData.name && <PlayerInput
             id="playerOne"
             label="Player One"
-            error={error}
-            loading={loading}
+            error={playerOneError}
             onSubmit={this.handleSubmit}
           />
           }
@@ -82,8 +76,7 @@ export default class Battle extends Component {
           {!playerTwoData.name && <PlayerInput
             id="playerTwo"
             label="Player Two"
-            error={error}
-            loading={loading}
+            error={playerTwoError}
             onSubmit={this.handleSubmit} />
           }
           {playerTwoData.image_url !== undefined &&
