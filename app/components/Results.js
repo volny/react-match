@@ -51,16 +51,24 @@ export default class Results extends Component {
   render() {
     const { winner, loser } = this.state
     return (
-      <div className="row">
-        <Player
-          label='Winner'
-          profile={winner}
-        />
-        <Player
-          label='Loser'
-          profile={loser}
-        />
-      </div>
+      <div>
+        <div className="row">
+          <Player
+            label='Winner'
+            profile={winner}
+          />
+          <Player
+            label='Loser'
+            profile={loser}
+          />
+        </div>
+
+        <Link
+          className="button"
+          to={{pathname: `/`}}
+        > Start Over </Link>
+
+    </div>
     )
   }
 }
