@@ -97,7 +97,7 @@ export default class Battle extends Component {
           <Link
             className="button"
             to={{
-              pathname: `${this.props.match.url}/results`,
+              pathname: `/results`,
               state: {
                 playerOneData,
                 playerTwoData

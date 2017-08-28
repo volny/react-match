@@ -3,8 +3,6 @@ import React, { Component } from 'react'
 // https://github.com/ReactTraining/react-router/issues/5114
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import Home from './Home'
-import Popular from './Popular'
 import Battle from './Battle'
 import Nav from './Nav'
 import Results from './Results'
@@ -16,10 +14,8 @@ export default class App extends Component {
         <div className="container">
           <Nav />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/battle" component={Battle} />
-            <Route path="/battle/results" component={Results} />
-            <Route path="/popular" component={Popular} />
+            <Route exact path="/" component={Battle} />
+            <Route path="/results" component={Results} />
             <Route render={() => <p>Not Found</p>} />
           </Switch>
         </div>
