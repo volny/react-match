@@ -2,20 +2,35 @@ const Twitter = require('twitter')
 const secrets = require('./secrets')
 const twitter = new Twitter(secrets)
 
-// TODO put this in a file ./algo.js
+// twitter counts tweets first, then filters out retweets and replies
+// therefore this is a theorical upper limit for how many tweets are fetched
+// the higher the number the more 'accurate' the result, but more data needs to be fetched and iterated over
+// you can change this number and the score should be 'weighted' relatively, meaning
+// fewer tweets just treats those as proportionally more important
+const numberOfTweets = 100
+
+// TODO put this in a file ./calculateScore.js
+
 const calculateScore = (user, timeline) => {
   const userScore = user.followers_count * 3 + user.statuses_count
 
-  const timelineSums = timeline.reduce((p, v) => ({
+  const timelineSums = timeline.reduce((p, v, i) => ({
     retweet_count: p.retweet_count + v.retweet_count,
-    favorite_count: p.favorite_count + v.favorite_count
-    // TODO: correct for people with lots of replies/retweets, which means they have fewer tweets returned from twitter api
-    // add a count var that increments for each tweet.
-    // then in timelineScore do (...)*(30/tweets)
-  }))
-  const timelineScore = timelineSums.retweet_count + timelineSums.favorite_count
+    favorite_count: p.favorite_count + v.favorite_count,
+    tweets_count: i + 1
+  }), {
+    retweet_count: 0,
+    favorite_count: 0,
+    tweets_count: 0
+  })
 
-  return Math.floor(Math.sqrt(userScore + timelineScore * 10))
+  // users with more replies/retweets have less tweets fetched and shouldn't be punished for that
+  const tweetWeight = numberOfTweets / timelineSums.tweets_count
+  const timelineScore = (timelineSums.retweet_count + timelineSums.favorite_count) * tweetWeight
+  // how influencial should userScore / timelineScore be
+  const userToTimelineWeight = 300 / numberOfTweets
+  const squaredScore = userScore + timelineScore * userToTimelineWeight
+  return Math.floor(Math.sqrt(squaredScore))
 }
 
 const formatImageUrl = (url) => {
@@ -33,8 +48,7 @@ module.exports = {
       include_rts: false,
       // no replies
       exclude_replies: true,
-      count: 30,
-      // no user info which 10x's the size of the response
+      count: numberOfTweets,
       trim_user: true
     })
 
@@ -54,4 +68,33 @@ module.exports = {
       .catch(error => console.log(error))
   }
 }
+
+//const calculateScore = (timeline) => {
+//  const numberOfTweets = 10
+//  const timelineSums = timeline.reduce((p, v, i) => ({
+//    retweet_count: p.retweet_count + v.retweet_count,
+//    favorite_count: p.favorite_count + v.favorite_count,
+//    tweets_count: i + 1
+//  }), {
+//    retweet_count: 0,
+//    favorite_count: 0,
+//    tweets_count: 0
+//  })
+//
+//  // users with more replies/retweets have less tweets fetched and shouldn't be punished for that
+//  const tweetWeight = numberOfTweets / timelineSums.tweets_count
+//  const timelineScore = (timelineSums.retweet_count + timelineSums.favorite_count) * tweetWeight
+//  // how influencial should userScore / timelineScore be
+//  const userToTimelineWeight = 300 / numberOfTweets
+//  const squaredScore = timelineScore * userToTimelineWeight
+//  //return Math.floor(Math.sqrt(squaredScore))
+//  return {
+//    tweetWeight: tweetWeight,
+//    retweets: timelineSums.retweet_count,
+//    favorites: timelineSums.favorite_count,
+//    timelineScore: timelineScore,
+//    squaredScore: squaredScore
+//  }
+//}
+
 
