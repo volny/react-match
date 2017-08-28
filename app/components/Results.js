@@ -38,18 +38,14 @@ Player.propTypes = {
 }
 
 export default class Results extends Component {
-  state = {
-    winner: null,
-    loser: null,
-  }
-
-  componentWillMount = () => {
+  constructor(props) {
+    super(props)
     const { playerOneData, playerTwoData } = this.props.location.state
     const [winner, loser] = sortPlayers([playerOneData, playerTwoData])
-    this.setState(() => ({
+    this.state = {
       winner,
-      loser,
-    }))
+      loser
+    }
   }
 
   render() {
